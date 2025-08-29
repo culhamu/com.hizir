@@ -1,93 +1,24 @@
-2024-06-03 - update api.js
-2024-06-04 - update api.js
-2024-06-05 - update api.js
-2024-06-07 - update api.js
-2024-06-12 - update api.js
-2024-06-12 - update api.js
-2024-06-13 - update api.js
-2024-06-14 - update api.js
-2024-06-18 - update api.js
-2024-06-19 - update api.js
-2024-06-21 - update api.js
-2024-06-24 - update api.js
-2024-06-26 - update api.js
-2024-06-27 - update api.js
-2024-07-01 - update api.js
-2024-07-08 - update api.js
-2024-07-12 - update api.js
-2024-07-14 - update api.js
-2024-07-17 - update api.js
-2024-07-22 - update api.js
-2024-07-22 - update api.js
-2024-07-23 - update api.js
-2024-07-24 - update api.js
-2024-07-30 - update api.js
-2024-08-05 - update api.js
-2024-08-06 - update api.js
-2024-08-13 - update api.js
-2024-08-14 - update api.js
-2024-08-15 - update api.js
-2024-08-19 - update api.js
-2024-08-22 - update api.js
-2024-08-24 - update api.js
-2024-08-25 - update api.js
-2024-08-25 - update api.js
-2024-08-26 - update api.js
-2024-08-28 - update api.js
-2024-08-29 - update api.js
-2024-09-04 - update api.js
-2024-09-05 - update api.js
-2024-09-09 - update api.js
-2024-09-10 - update api.js
-2024-09-12 - update api.js
-2024-09-17 - update api.js
-2024-09-19 - update api.js
-2024-09-20 - update api.js
-2024-09-30 - update api.js
-2024-10-02 - update api.js
-2024-10-05 - update api.js
-2024-10-06 - update api.js
-2024-10-09 - update api.js
-2024-10-09 - update api.js
-2024-10-10 - update api.js
-2024-10-10 - update api.js
-2024-10-11 - update api.js
-2024-10-16 - update api.js
-2024-10-22 - update api.js
-2024-10-23 - update api.js
-2024-10-23 - update api.js
-2024-10-25 - update api.js
-2024-10-29 - update api.js
-2024-10-30 - update api.js
-2024-11-04 - update api.js
-2024-11-07 - update api.js
-2024-11-07 - update api.js
-2024-11-08 - update api.js
-2024-11-12 - update api.js
-2024-11-13 - update api.js
-2024-11-13 - update api.js
-2024-11-14 - update api.js
-2024-11-15 - update api.js
-2024-11-17 - update api.js
-2024-11-17 - update api.js
-2024-11-17 - update api.js
-2024-11-23 - update api.js
-2024-11-25 - update api.js
-2024-11-27 - update api.js
-2024-11-29 - update api.js
-2024-12-02 - update api.js
-2024-12-04 - update api.js
-2024-12-05 - update api.js
-2024-12-05 - update api.js
-2024-12-07 - update api.js
-2024-12-09 - update api.js
-2024-12-09 - update api.js
-2024-12-09 - update api.js
-2024-12-10 - update api.js
-2024-12-13 - update api.js
-2024-12-14 - update api.js
-2024-12-19 - update api.js
-2024-12-19 - update api.js
-2024-12-20 - update api.js
-2024-12-24 - update api.js
-2024-12-25 - update api.js
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./routes/authRoutes.js";
+import carRoutes from "./routes/carRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
+
+dotenv.config();
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.error(err));
+
+app.use("/api/auth", authRoutes);
+app.use("/api/cars", carRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/appointments", appointmentRoutes);
+
+app.listen(5000, () => console.log("🚀 Server running on port 5000"));
