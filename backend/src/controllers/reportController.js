@@ -1,27 +1,20 @@
-import Report from "../models/Report.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import * as reportService from "../services/reportService.js";
 
-export const createReport = async (req, res, next) => {
-  try {
-    const { vehicleId, findings, score } = req.body;
-    const report = await Report.create({
-      vehicle: vehicleId,
-      inspector: req.user.id,
-      findings,
-      score,
-      status: "completed"
-    });
-    res.status(201).json(report);
-  } catch (err) {
-    next(err);
-  }
-};
+export const createReport = asyncHandler(async (req, res) => {
+  const { vehicleId, findings, score, attachments } = req.body;
+  const report = await reportService.createReport({
+    vehicleId,
+    inspectorId: req.user._id,
+    findings,
+    score,
+    attachments
+  });
+  res.status(201).json(report);
+});
 
-export const getVehicleReports = async (req, res, next) => {
-  try {
-    const { vehicleId } = req.params;
-    const reports = await Report.find({ vehicle: vehicleId }).populate("inspector", "name");
-    res.json(reports);
-  } catch (err) {
-    next(err);
-  }
-};
+export const getVehicleReports = asyncHandler(async (req, res) => {
+  const { vehicleId } = req.params;
+  const reports = await reportService.getReportsByVehicle(vehicleId);
+  res.json({ count: reports.length, data: reports });
+});
